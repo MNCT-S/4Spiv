@@ -5,8 +5,7 @@ import cv2
 import numpy as np
 
 ## 使い方
-## py Mov2Still.py foo.avi
-## カレントディレクトリに foo.png で動画が静止画に
+## py Avi2Still.py -h
 
 def m_slice(path, dir, extension, step):
     movie = cv2.VideoCapture(path)                  # 動画の読み込み
