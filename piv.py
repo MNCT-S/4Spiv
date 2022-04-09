@@ -72,14 +72,6 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
                 # ----------------------------------------------------------------------------------
 
         # ここからグラフ描画-------------------------------------
-        # フォントの種類とサイズを設定する。
-        plt.rcParams['font.size'] = 14
-        plt.rcParams['font.family'] = 'Times New Roman'
-
-        # 目盛を内側にする。
-        plt.rcParams['xtick.direction'] = 'in'
-        plt.rcParams['ytick.direction'] = 'in'
-
         # グラフの上下左右に目盛線を付ける。
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
@@ -138,6 +130,12 @@ parser.add_argument('inFolder', help='連続静止画が保存されているフ
 parser.add_argument('-o', '--outFolder', default='pivout', help='出力フォルダ．省略するとpivoutフォルダに出力されます．')
 parser.add_argument('-t', '--threshold', default=30, type=int, help='誤ベクトルのしきい値．デフォルト=30')
 args = parser.parse_args()
+
+# グラフ初期化
+plt.rcParams['font.size'] = 14              # フォントの種類とサイズを設定する。
+plt.rcParams['font.family'] = 'Times New Roman'
+plt.rcParams['xtick.direction'] = 'in'      # 目盛を内側にする。
+plt.rcParams['ytick.direction'] = 'in'
 
 # PIV解析の関数を実行
 piv(args.inFolder, args.outFolder, args.threshold)
