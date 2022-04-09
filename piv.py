@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 ## 使い方
 ## py piv.py -h
 
-def piv(dir='input', out_dir='piv_out', wsize=32, overlap=0, threshold=30):
+def piv(dir, out_dir, threshold, wsize=32, overlap=0):
     count = 0
     path_list = sorted(glob.glob(os.path.join(*[dir, '*'])))  # ファイルパスをソートしてリストする
 
@@ -135,7 +135,9 @@ def piv(dir='input', out_dir='piv_out', wsize=32, overlap=0, threshold=30):
 # 引数処理
 parser = argparse.ArgumentParser(description='連続静止画からPIV可視化を行います．')
 parser.add_argument('inFolder', help='連続静止画が保存されているフォルダ名．漢字を含むフォルダやファイル名はやめておきましょう．')
+parser.add_argument('-o', '--outFolder', default='pivout', help='出力フォルダ．省略するとpivoutフォルダに出力されます．')
+parser.add_argument('-t', '--threshold', default=30, type=int, help='誤ベクトルのしきい値．デフォルト=30')
 args = parser.parse_args()
 
 # PIV解析の関数を実行
-piv(args.inFolder, out_dir='piv_out')
+piv(args.inFolder, args.outFolder, args.threshold)
