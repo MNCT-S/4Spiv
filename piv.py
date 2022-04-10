@@ -13,6 +13,22 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
     count = 0
     path_list = sorted(glob.glob(os.path.join(*[dir, '*'])))  # ファイルパスをソートしてリストする
 
+    # グラフ初期化
+    plt.rcParams['font.size'] = 14              # フォントの種類とサイズを設定する。
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['xtick.direction'] = 'in'      # 目盛を内側にする。
+    plt.rcParams['ytick.direction'] = 'in'
+    # グラフの上下左右に目盛線を付ける。
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax1.yaxis.set_ticks_position('both')
+    ax1.xaxis.set_ticks_position('both')
+    # 背景画像の用意と表示設定
+    img = cv2.imread(path_list[0], 0)       # 最初の画像を背景画像とする
+    ax1.imshow(img, cmap='gray')            # 背景画像
+    cm = plt.get_cmap('jet')                # カラーマップ
+    vsf = 2                                 # ベクトル表示のスケールファクタ
+
     # 全画像ファイルをリストしてPIV計算を実施
     for i in range(len(path_list)-1):
         count += 1
@@ -72,16 +88,6 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
                 # ----------------------------------------------------------------------------------
 
         # ここからグラフ描画-------------------------------------
-        # グラフの上下左右に目盛線を付ける。
-        fig = plt.figure()
-        ax1 = fig.add_subplot(111)
-        ax1.yaxis.set_ticks_position('both')
-        ax1.xaxis.set_ticks_position('both')
-
-        # 背景画像の用意と表示設定
-        ax1.imshow(img2, cmap='gray')           # 背景画像
-        cm = plt.get_cmap('jet')                # カラーマップ
-        vsf = 2                                 # ベクトル表示のスケールファクタ
 
         # 誤ベクトル処理（一度に一定ピクセル（threshold）以上のベクトルは長さを0にする）
         for m in range(len(vectors_amps)):
@@ -104,23 +110,24 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
                           dx=vsf * coordinates[n][2], dy=vsf * coordinates[n][3],
                           width=0.01, head_width=10, color=cm(norm_vectors[n]))
 
-        # レイアウトタイト設定
-        fig.tight_layout()
-
         # out_dirで指定したフォルダが無い時に新規作成
-        if os.path.exists(out_dir):
-            pass
-        else:
-            os.mkdir(out_dir)
+#        if os.path.exists(out_dir):
+#            pass
+#        else:
+#            os.mkdir(out_dir)
 
         # 画像保存パスを連番で準備
-        path = os.path.join(*[out_dir, str("{:05}".format(count)) + '.png'])
+#        path = os.path.join(*[out_dir, str("{:05}".format(count)) + '.png'])
 
         # 画像を保存する
-        plt.savefig(path)
+#        plt.savefig(path)
 
         # 画像作成の進捗を表示
         print(count, '/', len(path_list) - 1)
+
+    # レイアウトタイト設定
+    fig.tight_layout()
+    plt.savefig('hoge.png')
 
     return
 
@@ -130,12 +137,6 @@ parser.add_argument('inFolder', help='連続静止画が保存されているフ
 parser.add_argument('-o', '--outFolder', default='pivout', help='出力フォルダ．省略するとpivoutフォルダに出力されます．')
 parser.add_argument('-t', '--threshold', default=30, type=int, help='誤ベクトルのしきい値．デフォルト=30')
 args = parser.parse_args()
-
-# グラフ初期化
-plt.rcParams['font.size'] = 14              # フォントの種類とサイズを設定する。
-plt.rcParams['font.family'] = 'Times New Roman'
-plt.rcParams['xtick.direction'] = 'in'      # 目盛を内側にする。
-plt.rcParams['ytick.direction'] = 'in'
 
 # PIV解析の関数を実行
 piv(args.inFolder, args.outFolder, args.threshold)
