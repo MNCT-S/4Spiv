@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 ## 使い方
 ## py piv.py -h
 
-def piv(dir, out_dir, threshold, wsize=32, overlap=0):
+def piv(dir, out, threshold, wsize=32, overlap=0):
     count = 0
     path_list = sorted(glob.glob(os.path.join(*[dir, '*'])))  # ファイルパスをソートしてリストする
 
@@ -91,7 +91,7 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
 
         # 誤ベクトル処理（一度に一定ピクセル（threshold）以上のベクトルは長さを0にする）
         for m in range(len(vectors_amps)):
-            print(m, '/', len(vectors_amps)-1)
+#            print(m, '/', len(vectors_amps)-1)
             if vectors_amps[m] >= threshold:
                 coordinates[m][2] = 0
                 coordinates[m][3] = 0
@@ -102,41 +102,28 @@ def piv(dir, out_dir, threshold, wsize=32, overlap=0):
 
         # 画像にベクトルをプロットする
         for n in range(len(vectors_amps)):
-            print(n, '/', len(vectors_amps)-1)          # 進捗表示
-
+#            print(n, '/', len(vectors_amps)-1)          # 進捗表示
             # 長さ0以外の場合に図にベクトル(dx, dyにそれぞれスケールを乗じた後のベクトル)を描画
             if vectors_amps[n] != 0:
                 ax1.arrow(x=coordinates[n][0], y=coordinates[n][1],
                           dx=vsf * coordinates[n][2], dy=vsf * coordinates[n][3],
                           width=0.01, head_width=10, color=cm(norm_vectors[n]))
 
-        # out_dirで指定したフォルダが無い時に新規作成
-#        if os.path.exists(out_dir):
-#            pass
-#        else:
-#            os.mkdir(out_dir)
-
-        # 画像保存パスを連番で準備
-#        path = os.path.join(*[out_dir, str("{:05}".format(count)) + '.png'])
-
-        # 画像を保存する
-#        plt.savefig(path)
-
         # 画像作成の進捗を表示
         print(count, '/', len(path_list) - 1)
 
     # レイアウトタイト設定
     fig.tight_layout()
-    plt.savefig('hoge.png')
+    plt.savefig(out)
 
     return
 
 # 引数処理
 parser = argparse.ArgumentParser(description='連続静止画からPIV可視化を行います．')
 parser.add_argument('inFolder', help='連続静止画が保存されているフォルダ名．漢字を含むフォルダやファイル名はやめておきましょう．')
-parser.add_argument('-o', '--outFolder', default='pivout', help='出力フォルダ．省略するとpivoutフォルダに出力されます．')
-parser.add_argument('-t', '--threshold', default=30, type=int, help='誤ベクトルのしきい値．デフォルト=30')
+parser.add_argument('-o', '--outFile', default='pivout', help='出力フォルダ．省略するとpivout.pngという名前に出力されます．')
+parser.add_argument('-t', '--threshold', default=10, type=int, help='誤ベクトルのしきい値．デフォルト=10')
 args = parser.parse_args()
 
 # PIV解析の関数を実行
-piv(args.inFolder, args.outFolder, args.threshold)
+piv(args.inFolder, args.outFile, args.threshold)
