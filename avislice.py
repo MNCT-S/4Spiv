@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 ## 使い方
-## py Avi2Still.py -h
+## py avislice.py -h
 
 def m_slice(path, out, step):
     movie = cv2.VideoCapture(path)                  # 動画の読み込み
