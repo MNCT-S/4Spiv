@@ -121,9 +121,12 @@ def piv(dir, out, threshold, wsize=32, overlap=0):
 # 引数処理
 parser = argparse.ArgumentParser(description='連続静止画からPIV可視化を行います．')
 parser.add_argument('inFolder', help='連続静止画が保存されているフォルダ名．漢字を含むフォルダやファイル名はやめておきましょう．')
-parser.add_argument('-o', '--outFile', default='pivout', help='出力フォルダ．省略するとpivout.pngという名前に出力されます．')
+parser.add_argument('-o', '--outFile', help='出力フォルダ．省略すると入力フォルダ名と同じ名前のpngファイルに出力されます．')
 parser.add_argument('-t', '--threshold', default=10, type=int, help='誤ベクトルのしきい値．デフォルト=10')
 args = parser.parse_args()
+
+if not args.outFile:
+    args.outFile = os.path.splitext(os.path.basename(args.inFolder))[0] + '.png'
 
 # PIV解析の関数を実行
 piv(args.inFolder, args.outFile, args.threshold)
