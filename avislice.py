@@ -16,7 +16,7 @@ def m_slice(path, out, step):
         check = i == ext_index                      # 現在のフレーム番号iが、抽出する指標番号と一致するかチェックする
         
         # frameを取得できた(flag=True)時だけ処理を行う
-        if flag == True:
+        if flag:    # == True
             # もしi番目のフレームが静止画を抽出するものであれば、ファイル名を付けて保存する
             if True in check:
                 # ファイル名は後でフォルダ内で名前でソートした時に連番になるようにする

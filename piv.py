@@ -104,7 +104,7 @@ def piv(dir, out, threshold, wsize=32, overlap=0):
         for n in range(len(vectors_amps)):
 #            print(n, '/', len(vectors_amps)-1)          # 進捗表示
             # 長さ0以外の場合に図にベクトル(dx, dyにそれぞれスケールを乗じた後のベクトル)を描画
-            if vectors_amps[n] != 0:
+            if vectors_amps[n]:     # != 0
                 ax1.arrow(x=coordinates[n][0], y=coordinates[n][1],
                           dx=vsf * coordinates[n][2], dy=vsf * coordinates[n][3],
                           width=0.01, head_width=10, color=cm(norm_vectors[n]))
