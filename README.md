@@ -10,6 +10,6 @@ opencv-python, numpy, matplotlib が必要です．
 
 ## piv.py
 連続静止画からPIV解析を行います  
-`py piv.py sample/s0`
+`py piv.py s0`
   
 ![解析結果](/sample/s0.png)
